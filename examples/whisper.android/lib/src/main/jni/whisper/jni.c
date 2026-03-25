@@ -181,6 +181,10 @@ Java_com_whispercpp_whisper_WhisperLib_00024Companion_fullTranscribe(
     params.offset_ms = 0;
     params.no_context = true;
     params.single_segment = false;
+    // --- 以下為你新增的專屬設定 ---
+    params.language       = "zh";
+    params.initial_prompt = "這是一段召會聚會的錄音，內容包含：阿們、恢復本聖經、職事、晨興、申言、操練靈、享受主、弟兄姊妹、小排、特會、訓練、相調、神人生活。";
+    // ------------------------------
 
     whisper_reset_timings(context);
 
