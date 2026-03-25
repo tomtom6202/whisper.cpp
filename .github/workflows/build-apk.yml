@@ -18,19 +18,22 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: 下載 Whisper 基礎模型 (為了讓 App 能編譯)
+    - name: 📥 下載中文通用模型並強制塞入 APK
       run: |
-        cd models
-        bash ./download-ggml-model.sh base.en
-        cd ..
+        # 1. 建立 Android 專屬的資源資料夾
+        mkdir -p examples/whisper.android/app/src/main/assets/models
+        # 2. 清除裡面可能壞掉的舊檔案
+        rm -f examples/whisper.android/app/src/main/assets/models/*.bin
+        # 3. 直接從官方庫下載支援多國語言的 base 模型
+        wget https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin -O examples/whisper.android/app/src/main/assets/models/ggml-base.bin
 
-    - name: 編譯 Android APK
+    - name: ⚙️ 編譯 Android APK
       working-directory: ./examples/whisper.android
       run: |
         chmod +x gradlew
         ./gradlew assembleDebug
 
-    - name: 將生成的 APK 上傳供下載
+    - name: 📦 將生成的 APK 上傳供下載
       uses: actions/upload-artifact@v4
       with:
         name: Whisper-聚會錄音版-APK
